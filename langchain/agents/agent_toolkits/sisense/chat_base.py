@@ -16,7 +16,7 @@ from langchain.memory.chat_memory import BaseChatMemory
 from langchain.utilities.sisense import SisenseDataset
 
 
-def create_pbi_chat_agent(
+def create_sisense_chat_agent(
     llm: BaseChatModel,
     toolkit: Optional[SisenseToolkit],
     sisense: Optional[SisenseDataset] = None,
@@ -32,7 +32,7 @@ def create_pbi_chat_agent(
     agent_executor_kwargs: Optional[Dict[str, Any]] = None,
     **kwargs: Dict[str, Any],
 ) -> AgentExecutor:
-    """Construct a pbi agent from an Chat LLM and tools.
+    """Construct a sisense agent from an Chat LLM and tools.
 
     If you supply only a toolkit and no sisense dataset, the same LLM is used for both.
     """
