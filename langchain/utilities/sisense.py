@@ -14,47 +14,22 @@ from requests.exceptions import Timeout
 
 _LOGGER = logging.getLogger(__name__)
 
-BASE_URL = os.getenv("SISENSE_BASE_URL", "https://api.SISENSE.com/v1.0/myorg")
+BASE_URL = os.getenv("SISENSE_BASE_URL", "https://api.SISENSE.com/v2.0/myorg")
 
 if TYPE_CHECKING:
     from azure.core.credentials import TokenCredential
 
 
 class sisenseNLQ(BaseModel):
-    """Create sisense engine from dataset ID and credential or token.
+    """Create an NLQ.
 
-    Use either the credential or a supplied token to authenticate.
-    If both are supplied the credential is used to generate a token.
-    The impersonated_user_name is the UPN of a user to be impersonated.
-    If the model is not RLS enabled, this will be ignored.
+    you are a data analyst, your job is to recieve a database schema and a question and identify the columns that are relevant to answer the question. 
+    step 1 - understand the question, 
+    step 2 - identify columns that are relevant to the question, 
+    step 3 - identify relevent aggregation or function to answer the question, 
+    step 4 - identify relevent columns and their values as filters to answer the question. 
     """
 
-    dataset_id: str
-    table_names: List[str]
-    group_id: Optional[str] = None
-    credential: Optional[TokenCredential] = None
-    token: Optional[str] = None
-    impersonated_user_name: Optional[str] = None
-    sample_rows_in_table_info: int = Field(default=1, gt=0, le=10)
-    schemas: Dict[str, str] = Field(default_factory=dict)
-    aiosession: Optional[aiohttp.ClientSession] = None
-
-    class Config:
-        """Configuration for this pydantic object."""
-
-        arbitrary_types_allowed = True
-
-    @validator("table_names", allow_reuse=True)
-    def fix_table_names(cls, table_names: List[str]) -> List[str]:
-        """Fix the table names."""
-        return [fix_table_name(table) for table in table_names]
-
-    @root_validator(pre=True, allow_reuse=True)
-    def token_or_credential_present(cls, values: Dict[str, Any]) -> Dict[str, Any]:
-        """Validate that at least one of token and credentials is present."""
-        if "token" in values or "credential" in values:
-            return values
-        raise ValueError("Please provide either a credential or a token.")
 
     @property
     def request_url(self) -> str:
