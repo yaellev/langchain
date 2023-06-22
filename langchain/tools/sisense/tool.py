@@ -26,7 +26,8 @@ class QuerySisenseTool(BaseTool):
 
     name = "query_Sisense"
     description = """
-    Input to this tool is a detailed question about the dataset, output is a result from the dataset. It will try to answer the question using the dataset, and if it cannot, it will ask for clarification.
+    Input to this tool is a detailed question about the dataset, output is a result from the dataset. 
+    It will try to answer the question using the dataset, and if it cannot, it will ask for clarification.
 
     Example Input: "How many rows are in table1?"
     """  # noqa: E501
