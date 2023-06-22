@@ -3,23 +3,23 @@ from typing import Any, Dict, List, Optional
 
 from langchain.agents import AgentExecutor
 from langchain.agents.agent import AgentOutputParser
-from langchain.agents.agent_toolkits.powerbi.prompt import (
+from langchain.agents.agent_toolkits.sisense.prompt import (
     SISENSE_CHAT_PREFIX,
     SISENSE_CHAT_SUFFIX,
 )
-from langchain.agents.agent_toolkits.powerbi.toolkit import SisenseToolkit
+from langchain.agents.agent_toolkits.sisense.toolkit import SisenseToolkit
 from langchain.agents.conversational_chat.base import ConversationalChatAgent
 from langchain.callbacks.base import BaseCallbackManager
 from langchain.chat_models.base import BaseChatModel
 from langchain.memory import ConversationBufferMemory
 from langchain.memory.chat_memory import BaseChatMemory
-from langchain.utilities.powerbi import SisenseDataset
+from langchain.utilities.sisense import SisenseDataset
 
 
 def create_pbi_chat_agent(
     llm: BaseChatModel,
     toolkit: Optional[SisenseToolkit],
-    powerbi: Optional[SisenseDataset] = None,
+    sisense: Optional[SisenseDataset] = None,
     callback_manager: Optional[BaseCallbackManager] = None,
     output_parser: Optional[AgentOutputParser] = None,
     prefix: str = SISENSE_CHAT_PREFIX,
@@ -34,12 +34,12 @@ def create_pbi_chat_agent(
 ) -> AgentExecutor:
     """Construct a pbi agent from an Chat LLM and tools.
 
-    If you supply only a toolkit and no powerbi dataset, the same LLM is used for both.
+    If you supply only a toolkit and no sisense dataset, the same LLM is used for both.
     """
     if toolkit is None:
-        if powerbi is None:
-            raise ValueError("Must provide either a toolkit or powerbi dataset")
-        toolkit = SisenseToolkit(powerbi=powerbi, llm=llm, examples=examples)
+        if sisense is None:
+            raise ValueError("Must provide either a toolkit or sisense dataset")
+        toolkit = SisenseToolkit(sisense=sisense, llm=llm, examples=examples)
     tools = toolkit.get_tools()
     agent = ConversationalChatAgent.from_llm_and_tools(
         llm=llm,
