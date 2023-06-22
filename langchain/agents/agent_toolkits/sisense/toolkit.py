@@ -9,19 +9,19 @@ from langchain.callbacks.base import BaseCallbackManager
 from langchain.chains.llm import LLMChain
 from langchain.prompts import PromptTemplate
 from langchain.tools import BaseTool
-from langchain.tools.powerbi.prompt import QUESTION_TO_QUERY
-from langchain.tools.powerbi.tool import (
-    InfoPowerBITool,
-    ListPowerBITool,
-    QueryPowerBITool,
+from langchain.tools.sisense.prompt import QUESTION_TO_QUERY
+from langchain.tools.sisense.tool import (
+    InfoSisenseTool,
+    ListSisenseTool,
+    QuerySisenseTool,
 )
-from langchain.utilities.powerbi import PowerBIDataset
+from langchain.utilities.sisense import SisenseDataset
 
 
-class PowerBIToolkit(BaseToolkit):
-    """Toolkit for interacting with PowerBI dataset."""
+class SisenseToolkit(BaseToolkit):
+    """Toolkit for interacting with Sisense dataset."""
 
-    powerbi: PowerBIDataset = Field(exclude=True)
+    sisense: SisenseDataset = Field(exclude=True)
     llm: BaseLanguageModel = Field(exclude=True)
     examples: Optional[str] = None
     max_iterations: int = 5
@@ -52,12 +52,12 @@ class PowerBIToolkit(BaseToolkit):
                 ),
             )
         return [
-            QueryPowerBITool(
+            QuerySisenseTool(
                 llm_chain=chain,
-                powerbi=self.powerbi,
+                sisense=self.sisense,
                 examples=self.examples,
                 max_iterations=self.max_iterations,
             ),
-            InfoPowerBITool(powerbi=self.powerbi),
-            ListPowerBITool(powerbi=self.powerbi),
+            InfoSisenseTool(sisense=self.sisense),
+            ListSisenseTool(sisense=self.sisense),
         ]
